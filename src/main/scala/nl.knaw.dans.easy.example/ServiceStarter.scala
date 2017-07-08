@@ -22,10 +22,12 @@ class ServiceStarter extends Daemon {
   var log: Logger = _ // Not loading logger yet, to avoid possibility of errors before init is called
   var service: EasyExampleModuleService = _ // Idem
 
-  def init(ctx: DaemonContext) = {
+  def init(ctx: DaemonContext): Unit = {
     log = LoggerFactory.getLogger(getClass)
+    log.info("Creating application object...")
+    val app = new EasyExampleModuleApp
     log.info("Initializing service...")
-    service = new EasyExampleModuleService
+    service = new EasyExampleModuleService(app)
     log.info("Service initialized.")
   }
 

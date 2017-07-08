@@ -21,23 +21,24 @@ case class CommandLineOptions(override val args: Seq[String], app: EasyExampleMo
   appendDefaultToDescription = true
   editBuilder(_.setHelpWidth(110))
   printedName = "easy-example-module"
-  private val _________ = " " * printedName.length
   private val SUBCOMMAND_SEPARATOR = "---\n"
   val description: String = s"""An example module generated with easy-module-archetype."""
-  val synopsis: String = s"""$printedName \\
-           |      <synopsis of command line parameters> \\
-           |      <...possibly continued again, or all joined on one line>""".stripMargin
+  val synopsis: String =
+    s"""
+       |  $printedName (synopsis of command line parameters)
+       |  $printedName (... possibly multiple lines for subcommands)""".stripMargin
 
-  version(s"$printedName v${app.version}")
-  banner(s"""
-           |  $description
-           |
-           |Usage:
-           |
-           |  $synopsis
-           |
-           |Options:
-           |""".stripMargin)
+  version(s"$printedName v${ app.version }")
+  banner(
+    s"""
+       |  $description
+       |
+       |Usage:
+       |
+       |$synopsis
+       |
+       |Options:
+       |""".stripMargin)
   //val url = opt[String]("someOption", noshort = true, descr = "Description of the option", default = app.someProperty)
 
   val runService = new Subcommand("run-service") {

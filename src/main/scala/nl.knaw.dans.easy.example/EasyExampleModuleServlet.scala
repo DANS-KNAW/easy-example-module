@@ -18,7 +18,7 @@ package nl.knaw.dans.easy.example
 import nl.knaw.dans.lib.logging.DebugEnhancedLogging
 import org.scalatra._
 
-case class EasyExampleModuleServlet(app: EasyExampleModuleApp) extends ScalatraServlet with DebugEnhancedLogging {
+class EasyExampleModuleServlet(app: EasyExampleModuleApp) extends ScalatraServlet with DebugEnhancedLogging {
   import app._
   import logger._
 

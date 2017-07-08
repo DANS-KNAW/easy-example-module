@@ -2,15 +2,14 @@ easy-example-module
 ===========
 [![Build Status](https://travis-ci.org/DANS-KNAW/easy-example-module.png?branch=master)](https://travis-ci.org/DANS-KNAW/easy-example-module)
 
-<Remove this comment and extend the descriptions below>
+<!-- Remove this comment and extend the descriptions below -->
 
 
 SYNOPSIS
 --------
 
-    easy-example-module \
-            <synopsis of command line parameters> \
-            <...possibly continued again, or all joined on one line>
+    easy-example-module (synopsis of command line parameters)
+    easy-example-module (... possibly multiple lines for subcommands)
 
 
 DESCRIPTION

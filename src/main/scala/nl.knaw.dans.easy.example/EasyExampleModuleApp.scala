@@ -17,28 +17,28 @@ package nl.knaw.dans.easy.example
 
 import java.nio.file.{ Files, Paths }
 
+import nl.knaw.dans.lib.logging.DebugEnhancedLogging
 import org.apache.commons.configuration.PropertiesConfiguration
 
 import scala.io.Source
 
-trait EasyExampleModuleApp {
-  // extends ...
-  // with ...
-  // Mix in the traits that provided the application's functionality
+class EasyExampleModuleApp extends DebugEnhancedLogging {
+  import logger._
   private val home = Paths.get(System.getProperty("app.home"))
-  private val cfg = Seq(
-    Paths.get(s"/etc/opt/dans.knaw.nl/easy-example-module/"),
-    home.resolve("cfg")).find(Files.exists(_)).getOrElse { throw new IllegalStateException("No configuration directory found")}
-
+  debug(s"app.home = $home")
   val version: String = resource.managed(scala.io.Source.fromFile(home.resolve("bin/version").toFile)).acquireAndGet {
     _.mkString
   }
-  val properties = new PropertiesConfiguration(cfg.resolve("application.properties").toFile)
+  debug(s"version = $version")
+  private val cfg = Seq(
+    Paths.get(s"/etc/opt/dans.knaw.nl/easy-example-module/"),
+    home.resolve("cfg")).find(Files.exists(_)).getOrElse { throw new IllegalStateException("No configuration directory found")}
+  debug(s"Found configuration directory at $cfg")
 
-  // Fill the fields required by the traits mixed in above
-  // val settingForTraitX = properties.getString("setting.x")
+  private val properties = new PropertiesConfiguration(cfg.resolve("application.properties").toFile)
+  info(s"Reading configuration from ${properties.getFile}")
 
-  def validateSettings(): Unit = {
-    // Validate the settings read in above. This methods should cause the application to halt if settings are found to be invalid.
-  }
+  val httpPort: Int = properties.getInt("daemon.http.port")
+
+  // Wiring and initialization here.
 }
