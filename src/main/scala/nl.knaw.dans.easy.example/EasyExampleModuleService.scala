@@ -26,36 +26,35 @@ import org.scalatra.servlet.ScalatraListener
 
 import scala.util.Try
 
-class EasyExampleModuleService(app: EasyExampleModuleApp) extends DebugEnhancedLogging {
+class EasyExampleModuleService(serverPort: Int, app: EasyExampleModuleApp) extends DebugEnhancedLogging {
   import logger._
 
-  private val server = new Server(app.httpPort)
+  private val server = new Server(serverPort)
   private val context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS)
   context.addEventListener(new ScalatraListener() {
     override def probeForCycleClass(classLoader: ClassLoader): (String, LifeCycle) = {
       ("anonymous", new LifeCycle {
         override def init(context: ServletContext): Unit = {
-          debug("Mounting servlet...")
           context.mount(new EasyExampleModuleServlet(app), "/")
-          debug("Servlet mounted.")
         }
       })
     }
   })
   server.setHandler(context)
-  info(s"HTTP port is ${app.httpPort}")
+  info(s"HTTP port is ${serverPort}")
 
   def start(): Try[Unit] = Try {
-    info("Starting HTTP service...")
+    info("Starting service...")
     server.start()
   }
 
   def stop(): Try[Unit] = Try {
-    info("Stopping HTTP service...")
+    info("Stopping service...")
     server.stop()
   }
 
   def destroy(): Try[Unit] = Try {
     server.destroy()
+    app.close()
   }
 }

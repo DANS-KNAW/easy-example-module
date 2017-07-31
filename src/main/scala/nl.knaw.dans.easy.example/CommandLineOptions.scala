@@ -17,7 +17,7 @@ package nl.knaw.dans.easy.example
 
 import org.rogach.scallop.{ScallopConf, ScallopOption, Subcommand, singleArgConverter}
 
-case class CommandLineOptions(override val args: Seq[String], app: EasyExampleModuleApp) extends ScallopConf(args) {
+class CommandLineOptions(args: Array[String], configuration: Configuration) extends ScallopConf(args) {
   appendDefaultToDescription = true
   editBuilder(_.setHelpWidth(110))
   printedName = "easy-example-module"
@@ -28,7 +28,7 @@ case class CommandLineOptions(override val args: Seq[String], app: EasyExampleMo
        |  $printedName (synopsis of command line parameters)
        |  $printedName (... possibly multiple lines for subcommands)""".stripMargin
 
-  version(s"$printedName v${ app.version }")
+  version(s"$printedName v${ configuration.version }")
   banner(
     s"""
        |  $description

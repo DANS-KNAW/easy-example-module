@@ -15,30 +15,20 @@
  */
 package nl.knaw.dans.easy.example
 
-import java.nio.file.{ Files, Paths }
+import scala.util.{ Try, Success }
 
-import nl.knaw.dans.lib.logging.DebugEnhancedLogging
-import org.apache.commons.configuration.PropertiesConfiguration
+class EasyExampleModuleApp(wiring: ApplicationWiring) extends AutoCloseable {
 
-import scala.io.Source
 
-class EasyExampleModuleApp extends DebugEnhancedLogging {
-  import logger._
-  private val home = Paths.get(System.getProperty("app.home"))
-  debug(s"app.home = $home")
-  val version: String = resource.managed(scala.io.Source.fromFile(home.resolve("bin/version").toFile)).acquireAndGet {
-    _.mkString
+  // The application's API here. This is what is used by driver or entry-point objects.
+
+  def init(): Try[Unit] = {
+    // Do any initialization of the application here. Typical examples are opening
+    // databases or connecting to other services.
+    Success(())
   }
-  debug(s"version = $version")
-  private val cfg = Seq(
-    Paths.get(s"/etc/opt/dans.knaw.nl/easy-example-module/"),
-    home.resolve("cfg")).find(Files.exists(_)).getOrElse { throw new IllegalStateException("No configuration directory found")}
-  debug(s"Found configuration directory at $cfg")
 
-  private val properties = new PropertiesConfiguration(cfg.resolve("application.properties").toFile)
-  info(s"Reading configuration from ${properties.getFile}")
+  override def close(): Unit = {
 
-  val httpPort: Int = properties.getInt("daemon.http.port")
-
-  // Wiring and initialization here.
+  }
 }

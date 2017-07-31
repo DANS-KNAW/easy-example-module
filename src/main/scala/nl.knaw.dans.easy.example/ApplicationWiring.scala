@@ -13,22 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.knaw.dans.easy
+package nl.knaw.dans.easy.example
 
-import java.nio.file.Paths
+import nl.knaw.dans.lib.logging.DebugEnhancedLogging
 
-import scala.util.{Failure, Success, Try}
-
-package object example {
-
-  implicit class TryExtensions2[T](val t: Try[T]) extends AnyVal {
-    // TODO candidate for dans-scala-lib
-    def unsafeGetOrThrow: T = {
-      t match {
-        case Success(value) => value
-        case Failure(throwable) => throw throwable
-      }
-    }
-  }
+/**
+ * Initializes and wires together the components of this application.
+ *
+ * @param configuration the application configuration
+ */
+class ApplicationWiring(configuration: Configuration) extends DebugEnhancedLogging
+// Mix in components
+{
+  // Configure components with configuration settings.
 }
-
